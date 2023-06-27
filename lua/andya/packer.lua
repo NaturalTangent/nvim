@@ -4,6 +4,8 @@
 vim.cmd [[packadd packer.nvim]]
 
 
+
+
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
@@ -30,6 +32,8 @@ return require('packer').startup(function(use)
     use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
     use 'nvim-lualine/lualine.nvim' -- Fancier statusline
     use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
+    use 'mfussenegger/nvim-dap'
+    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"  } }
 
     use {
         'VonHeikemen/lsp-zero.nvim',
