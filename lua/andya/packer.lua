@@ -34,6 +34,7 @@ return require('packer').startup(function(use)
     use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
     use 'mfussenegger/nvim-dap'
     use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"  } }
+    use 'folke/neodev.nvim'
 
     use {
         'VonHeikemen/lsp-zero.nvim',
