@@ -3,9 +3,6 @@
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
-
-
-
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
@@ -42,10 +39,7 @@ return require('packer').startup(function(use)
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
     use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
-    use 'nvim-lualine/lualine.nvim' -- Fancier statusline
     use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
-    use 'mfussenegger/nvim-dap'
-    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"  } }
     use 'folke/neodev.nvim'
 
     use {
@@ -81,4 +75,12 @@ return require('packer').startup(function(use)
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
      }
+
+     -- rust
+    use 'simrat39/rust-tools.nvim'
+
+     -- debugging
+    use 'mfussenegger/nvim-dap'
+    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"  } }
+     use 'nvim-lua/plenary.nvim'
 end)

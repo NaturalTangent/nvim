@@ -1,4 +1,4 @@
-local dap = require('dap')
+local dap, dapui = require("dap"), require("dapui")
 
 dap.adapters.lldb = {
 	type = "executable",
@@ -70,9 +70,21 @@ dap.configurations.rust = {
 dap.configurations.c = lldb
 dap.configurations.cpp = lldb
 
+dapui.setup()
 
-vim.keymap.set('n', '<leader>5', function() require('dap').continue() end)
-vim.keymap.set('n', '<leader>0', function() require('dap').step_over() end)
-vim.keymap.set('n', '<leader>-', function() require('dap').step_into() end)
-vim.keymap.set('n', '<leader>=', function() require('dap').step_out() end)
-vim.keymap.set('n', '<leader>9', function() require('dap').toggle_breakpoint() end)
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
+
+vim.keymap.set("n", "<C-d>", function() dapui.toggle() end)
+vim.keymap.set('n', '<leader>5', function() dap.continue() end)
+vim.keymap.set('n', '<leader>0', function() dap.step_over() end)
+vim.keymap.set('n', '<leader>-', function() dap.step_into() end)
+vim.keymap.set('n', '<leader>=', function() dap.step_out() end)
+vim.keymap.set('n', '<leader>9', function() dap.toggle_breakpoint() end)
