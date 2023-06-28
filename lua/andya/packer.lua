@@ -21,6 +21,8 @@ return require('packer').startup(function(use)
         end
     })
 
+    use "rebelot/kanagawa.nvim"
+
     use({
         "folke/trouble.nvim",
         config = function()
