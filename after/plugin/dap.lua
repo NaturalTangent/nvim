@@ -40,10 +40,11 @@ local lldb_rust = {
 	runInTerminal = false,
 
     initCommands = function()
-	-- build before launching
-	vim.fn.jobstart("cargo build")
+      -- build before launching
+      vim.fn.jobstart("cargo build")
 
-	-- This pulls in the rust type info
+      -- This pulls in the rust type info
+
       -- Find out where to look for the pretty printer Python module
       local rustc_sysroot = vim.fn.trim(vim.fn.system('rustc --print sysroot'))
 
