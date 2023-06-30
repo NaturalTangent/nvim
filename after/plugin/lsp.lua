@@ -14,9 +14,9 @@ lsp.nvim_workspace()
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
 local cmp_mappings = lsp.defaults.cmp_mappings({
-  ['<C-Up>'] = cmp.mapping.select_prev_item(cmp_select),
-  ['<C-Down>'] = cmp.mapping.select_next_item(cmp_select),
-  ['<C-Right>'] = cmp.mapping.confirm({ select = true }),
+  ['<Up>'] = cmp.mapping.select_prev_item(cmp_select),
+  ['<Down>'] = cmp.mapping.select_next_item(cmp_select),
+  ['<Cr>'] = cmp.mapping.confirm({ select = true }),
   ["<C-Space>"] = cmp.mapping.complete(),
   ["<Esc>"] = cmp.mapping.abort(),
 })
@@ -55,7 +55,7 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 end)
 
---lsp.setup()
+lsp.setup()
 
 vim.diagnostic.config({
     virtual_text = true,
