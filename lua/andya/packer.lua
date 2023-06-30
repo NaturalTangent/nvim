@@ -87,6 +87,5 @@ return require('packer').startup(function(use)
      use 'nvim-lua/plenary.nvim'
 
      -- markdown preview
-     use 'ellisonleao/glow.nvim'
      use({ "iamcco/markdown-preview.nvim", run = function() vim.fn["mkdp#util#install"]() end, })
 end)
