@@ -16,9 +16,9 @@ local cmp_select = {behavior = cmp.SelectBehavior.Select}
 local cmp_mappings = lsp.defaults.cmp_mappings({
   ['<Up>'] = cmp.mapping.select_prev_item(cmp_select),
   ['<Down>'] = cmp.mapping.select_next_item(cmp_select),
-  ['<Cr>'] = cmp.mapping.confirm({ select = true }),
+  ['<Space>'] = cmp.mapping.confirm({ select = true }),
   ["<C-Space>"] = cmp.mapping.complete(),
-  ["<Esc>"] = cmp.mapping.abort(),
+  ["q"] = cmp.mapping.abort(),
 })
 
 -- disable completion with tab
