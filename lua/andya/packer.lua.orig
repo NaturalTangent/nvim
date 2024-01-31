@@ -109,6 +109,9 @@ return require('packer').startup(function(use)
 
      -- markdown preview
      use({ "iamcco/markdown-preview.nvim", run = function() vim.fn["mkdp#util#install"]() end, })
+<<<<<<< HEAD
+
+=======
 	 
 	 
 	-- Automatically set up your configuration after cloning packer.nvim
@@ -116,4 +119,5 @@ return require('packer').startup(function(use)
 	if packer_bootstrap then
 		require('packer').sync()
 	end
+>>>>>>> 8e7e43a60b07e6ba32b0957bf69acdceb7455a23
 end)
