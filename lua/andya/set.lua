@@ -35,3 +35,9 @@ vim.opt.colorcolumn = "80"
 
 -- Set completeopt to have a better completion experience
 vim.opt.completeopt = 'menuone,noselect'
+
+-- never beep
+vim.opt.vb = true
+
+-- no folding
+vim.opt.foldenable = false
