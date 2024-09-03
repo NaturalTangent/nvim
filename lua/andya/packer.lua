@@ -22,7 +22,7 @@ return require('packer').startup(function(use)
 	
 	use { "williamboman/mason.nvim" }
 	
-	use { "mason-lspconfig", requires = {{"williamboman/mason.nvim"}} }
+	use { "williamboman/mason-lspconfig", requires = {{"williamboman/mason.nvim"}} }
 	
 	use { "nvim-neotest/nvim-nio" }
 
@@ -56,6 +56,7 @@ return require('packer').startup(function(use)
 
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
     use('nvim-treesitter/playground')
+    use('nvim-treesitter/nvim-treesitter-context')
     use('ThePrimeagen/harpoon')
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
@@ -116,11 +117,17 @@ return require('packer').startup(function(use)
      -- markdown preview
      use({ "iamcco/markdown-preview.nvim", run = function() vim.fn["mkdp#util#install"]() end, })
 	 
-	 
-	-- Automatically set up your configuration after cloning packer.nvim
-	-- Put this at the end after all plugins
-	if packer_bootstrap then
-		require('packer').sync()
-	end
+
+    -- tabs
+    -- These optional plugins should be loaded directly because of a bug in Packer lazy loading
+    use 'nvim-tree/nvim-web-devicons' -- OPTIONAL: for file icons
+    use 'lewis6991/gitsigns.nvim' -- OPTIONAL: for git status
+    use 'romgrk/barbar.nvim'
+
+    -- Automatically set up your configuration after cloning packer.nvim
+    -- Put this at the end after all plugins
+    if packer_bootstrap then
+            require('packer').sync()
+    end
 end)
 
