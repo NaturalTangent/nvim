@@ -1,10 +1,11 @@
 local dap, dapui = require("dap"), require("dapui")
 
 require("mason").setup()
+--[[
 local mason_registry = require("mason-registry")
 local codelldb = mason_registry.get_package("codelldb")
 local extension_path = codelldb:get_install_path() .. "/extension/"
-local codelldb_path = extension_path .. "adapter/codelldb.exe"
+local codelldb_path = extension_path .. "adapter/codelldb"
 --local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
 --local liblldb_path = extension_path .. "lldb/bin/liblldb.dll"
 
@@ -32,9 +33,16 @@ local lldb = {
 	runInTerminal = false,
 }
 
+dap.configurations.rust = {
+	lldb_rust -- different debuggers or more configurations can be used here
+}
+dap.configurations.c = lldb
+dap.configurations.cpp = lldb
+]]
+
 local lldb_rust = {
 	name = "Launch lldb rust",
-	type = "lldb", -- matches the adapter
+	type = "lldb",   -- matches the adapter
 	request = "launch", -- could also attach to a currently running process
 	program = function()
 		return vim.fn.input(
@@ -48,41 +56,67 @@ local lldb_rust = {
 	args = {},
 	runInTerminal = false,
 
-    initCommands = function()
-      -- build before launching
-      vim.fn.jobstart("cargo build")
+	initCommands = function()
+		-- build before launching
+		vim.fn.jobstart("cargo build")
 
-      -- This pulls in the rust type info
+		-- This pulls in the rust type info
 
-      -- Find out where to look for the pretty printer Python module
-      local rustc_sysroot = vim.fn.trim(vim.fn.system('rustc --print sysroot'))
+		-- Find out where to look for the pretty printer Python module
+		local rustc_sysroot = vim.fn.trim(vim.fn.system('rustc --print sysroot'))
 
-      local script_import = 'command script import "' .. rustc_sysroot .. '/lib/rustlib/etc/lldb_lookup.py"'
-      local commands_file = rustc_sysroot .. '/lib/rustlib/etc/lldb_commands'
+		local script_import = 'command script import "' .. rustc_sysroot .. '/lib/rustlib/etc/lldb_lookup.py"'
+		local commands_file = rustc_sysroot .. '/lib/rustlib/etc/lldb_commands'
 
-      local commands = {}
-      local file = io.open(commands_file, 'r')
-      if file then
-        for line in file:lines() do
-          table.insert(commands, line)
-        end
-        file:close()
-      end
-      table.insert(commands, 1, script_import)
+		local commands = {}
+		local file = io.open(commands_file, 'r')
+		if file then
+			for line in file:lines() do
+				table.insert(commands, line)
+			end
+			file:close()
+		end
+		table.insert(commands, 1, script_import)
 
-      return commands
-    end
+		return commands
+	end
 }
-dap.configurations.rust = {
-	lldb_rust -- different debuggers or more configurations can be used here
+
+-- C lang configurations
+local lldb_c = {
+	{
+		name = "Launch debugger",
+		type = "lldb",
+		request = "launch",
+		cwd = "${workspaceFolder}",
+		program = function()
+			-- Build with debug symbols
+			local out = vim.fn.system({ "make", "debug" })
+			-- Check for errors
+			if vim.v.shell_error ~= 0 then
+				vim.notify(out, vim.log.levels.ERROR)
+				return nil
+			end
+			-- Return path to the debuggable program
+			return "path/to/executable"
+		end,
+	},
 }
-dap.configurations.c = lldb
-dap.configurations.cpp = lldb
+
+
+local cfg = {
+	configurations = {
+		c = lldb_c,
+		rust = lldb_rust,
+	},
+}
+
+require("dap-lldb").setup(cfg)
 
 dapui.setup()
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open()
+	dapui.open()
 end
 --dap.listeners.before.event_terminated["dapui_config"] = function()
 --  dapui.close()
