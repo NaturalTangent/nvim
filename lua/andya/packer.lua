@@ -115,7 +115,15 @@ return require('packer').startup(function(use)
     use 'nvim-lua/plenary.nvim'
 
      -- markdown preview
-     use({ "iamcco/markdown-preview.nvim", run = function() vim.fn["mkdp#util#install"]() end, })
+     --use({ "iamcco/markdown-preview.nvim", run = function() vim.fn["mkdp#util#install"]() end, })
+     --use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
+     use { 'euclio/vim-markdown-composer',
+        run = 'cargo build --release',
+        config = function ()
+            vim.g.markdown_composer_external_renderer='pandoc -f markdown -t html'
+            vim.g.markdown_composer_autostart = 0
+        end
+    }
 	 
 
     -- tabs
@@ -123,6 +131,9 @@ return require('packer').startup(function(use)
     use 'nvim-tree/nvim-web-devicons' -- OPTIONAL: for file icons
     use 'lewis6991/gitsigns.nvim' -- OPTIONAL: for git status
     use 'romgrk/barbar.nvim'
+
+    -- lsp formatting
+    use "lukas-reineke/lsp-format.nvim"
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

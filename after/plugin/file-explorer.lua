@@ -11,6 +11,12 @@ local tree = require('nvim-tree')
 tree.setup({
 --  open_on_setup = true,
 --  ignore_buffer_on_setup = true,
+
+	-- disable git integration - too slow on windows
+	git = {
+		enable = false,
+	},
+
 })
 
 vim.keymap.set("n", "<C-t>", [[:NvimTreeToggle<CR>]])

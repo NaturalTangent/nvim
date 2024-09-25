@@ -3,7 +3,31 @@ local lsp = require("lsp-zero")
 local lsp_attach = function(client, bufnr)
   -- see :help lsp-zero-keybindings
   -- to learn the available actions
-  lsp.default_keymaps({buffer = bufnr})
+  -- lsp.default_keymaps({buffer = bufnr})
+
+  local opts = {buffer = bufnr, remap = false}
+
+  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+  vim.keymap.set("n", "<leader>k", vim.lsp.buf.hover, opts)
+  vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
+  vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
+  vim.keymap.set("n", "<leader>ws", vim.lsp.buf.workspace_symbol, opts)
+  vim.keymap.set("n", "<leader>wl", function() 
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, opts)
+  vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+  vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
+  vim.keymap.set("n", "<leader>]", vim.diagnostic.goto_next, opts)
+  vim.keymap.set("n", "<leader>[", vim.diagnostic.goto_prev, opts)
+  vim.keymap.set({"n", "v"}, "<leader>.", vim.lsp.buf.code_action, opts)
+  vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
+  vim.keymap.set("i", "<A-k>", vim.lsp.buf.signature_help, opts)
+
+  -- formatting
+  require("lsp-format").on_attach(client, bufnr)
 end
 
 lsp.extend_lspconfig({
@@ -39,7 +63,7 @@ require("mason").setup()
 require('mason-lspconfig').setup({
   -- Replace the language servers listed here
   -- with the ones you want to install
-  ensure_installed = {'gopls', 'rust_analyzer'},
+  ensure_installed = {'gopls', 'rust_analyzer', 'marksman'},
   handlers = {
     function(server_name)
       require('lspconfig')[server_name].setup({})

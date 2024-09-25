@@ -1,8 +1,17 @@
 local dap, dapui = require("dap"), require("dapui")
 
+require("mason").setup()
+local mason_registry = require("mason-registry")
+local codelldb = mason_registry.get_package("codelldb")
+local extension_path = codelldb:get_install_path() .. "/extension/"
+local codelldb_path = extension_path .. "adapter/codelldb.exe"
+--local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
+--local liblldb_path = extension_path .. "lldb/bin/liblldb.dll"
+
 dap.adapters.lldb = {
 	type = "executable",
-	command = "/usr/bin/lldb-vscode", -- adjust as needed
+	--command = "/usr/bin/lldb-vscode", -- adjust as needed
+	command = codelldb_path, -- adjust as needed
 	name = "lldb",
 }
 
